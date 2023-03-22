@@ -1,3 +1,6 @@
+-- Cheating
+_ACTIVE_TAB = 0;
+
 local wezterm = require'wezterm'
 
 local module = {}
@@ -8,8 +11,13 @@ function module.alter_config(config)
 		function (tab, tabs, panes, config, hover, max_width)
 			-- TODO: use [tabs] instead of a global variable
 			-- Figure out how [tabs] works, fix documentation if needed
+			--	-- Seemingly, not an array, but a table
+			--	-- Cannot iterate with pairs()
 
 			local indicatorLine = '▌';
+			local indicatorColor = '#636750';
+
+
 
 
 			if _ACTIVE_TAB + 1 == tab.tab_index then
@@ -18,6 +26,12 @@ function module.alter_config(config)
 
 			-- default to gray
 			local Background =  '#333333';
+			local Forground = '#4C5039';
+
+			if hover then
+				indicatorColor = '#a3a790';
+				Forground = '#8C9089';
+			end
 
 			if tab.is_active then
 				_ACTIVE_TAB = tonumber(tab.tab_index);
@@ -27,11 +41,11 @@ function module.alter_config(config)
 			return {
 				-- ::before
 				{ Background = { Color = Background} },
-				{ Foreground = { Color = '#636750' } },
+				{ Foreground = { Color = indicatorColor } },
 				{ Text = indicatorLine},
 				-- content
 				{ Background = { Color = Background} },
-				{ Foreground = { Color = '#4C5039' } },
+				{ Foreground = { Color = Forground} },
 				{ Text = ' ' .. tab.active_pane.foreground_process_name:gsub('.*/', '') .. ' '},
 				-- ::after
 				{ Background = { Color = '#333333' } },
@@ -54,13 +68,13 @@ function module.alter_config(config)
 
 	config.use_fancy_tab_bar = false;
 
-	-- causes some graphical glitching when under heavy load
-	-- config.front_end = "WebGpu";
 
 	-- I Hate You.
 	config.window_padding = {
 		left = 0,
 		right = 0,
+		top = 0,
+		bottom = 0,
 	}
 
 	config.font_size = 9;

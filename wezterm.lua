@@ -1,5 +1,3 @@
--- Cheating
-_ACTIVE_TAB = 0;
 
 local wezterm = require 'wezterm'
 
@@ -39,5 +37,8 @@ wezterm.on(
 -- More like brokeland amiright?? I am ashamed of myself
 -- Only needed with Nvidia graphics cards
 config.enable_wayland = false
+
+-- causes some graphical glitching when under heavy load
+-- config.front_end = "WebGpu";
 
 return config;
